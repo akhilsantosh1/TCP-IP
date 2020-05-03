@@ -1,20 +1,21 @@
 import asyncio
 
-
-async def tcp_echo_client():
-    reader, writer = await asyncio.open_connection(
-        '127.0.0.1', 8888)
-    message = ''
+async def Client():
+    read, write = await asyncio.open_connection(
+        '127.0.0.1', 8080)
+    command = ''
     while True:
-        message = input('[Enter Message]\n')
-        if message == 'exit':
+        message = input('***Enter your command***:')
+        write.write(message.encode())
+        data = await read.read(4096)
+        print("Recived Data:")
+        print(data.decode())
+        if command == "quit":
+            print('***connection closed***')
+            write.close()
             break
+        if command == "":
+            print("***Invalid Command***")
+            continue
 
-        writer.write(message.encode())
-        data = await reader.read(100)
-        print(f'Received: {data.decode()}')
-    print('Close the connection')
-    writer.close()
-
-
-asyncio.run(tcp_echo_client())
+asyncio.run(Client())
