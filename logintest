@@ -1,0 +1,25 @@
+ def logintest(self):
+        
+        datalog = pandas.DataFrame(columns=['username'])
+        datalog['username'] = ['test']
+        datalog['password'] = ['123']
+        datalog['isAdmin'] = 1
+
+        datatest = User()
+        datatest.createdusers = datalog
+        datatest.login('test', 123)
+        print(datatest.delete1('test', 123))
+        datatest.register('test', '123', 'admin')
+        expect = ['\nWrong password!']
+        gathresult = []
+        test1 = [
+            ['test', '1234'],
+        ]
+
+        for test in test1:
+            gathresult.append(datatest.login(test[0], test[1]))
+        datatest.is_login = True
+        print(datatest.delete1('test', 123))
+        datatest.quit()
+
+        self.assertListEqual(gathresult, expect)    
