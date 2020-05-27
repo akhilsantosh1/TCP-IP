@@ -1,3 +1,7 @@
+'''
+The following set consists class with functions 
+for passing commands to the server
+'''
 import pathlib
 import time
 import pandas
@@ -6,7 +10,40 @@ import csv
 import os
 
 class User():
-
+    '''
+    This class consists of the functions which are used to execute commands
+    ****
+    create_folder:
+    Function for creating directory and folder
+    ****
+    register:
+    Function to regeister a user
+    ****
+    login:
+    Function for login of a registered user
+    ****
+    quit:
+    Function for signout of a user
+    ****
+    delete1:
+    Function for deleting a registered user
+    ****
+    change_folder:
+    Function for changing directory
+    ****
+    commands:
+    Function that displays all the commands that can be executed
+    ****
+    list:
+    gives a list of all the working directories in the server- client exchange
+    ****
+    read_file:
+    Function to read the given file in a given directory
+    ****
+    write_file:
+    Function to write the given file in a given directory
+    ****
+    '''
     def __init__(self):
        
         self.usr_id = None
