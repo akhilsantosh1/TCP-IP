@@ -10,7 +10,7 @@ import csv
 import os
 
 class User():
-        '''
+    '''
     This class consists of the functions which are used to execute commands
     ****
     create_folder:
