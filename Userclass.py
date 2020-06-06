@@ -226,7 +226,12 @@ class User():
 
 
     def change_folder(self, directory):
-        
+        '''
+        This function is used to change the directory of the user
+        ********
+        Admin can change the directory to any desired location
+        ********
+        '''
         logdata = pandas.read_csv('ServerAccessSession/Users.csv')
         self.session()
 
