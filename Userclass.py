@@ -121,7 +121,16 @@ class User():
 
 
     def login(self, usr_id, passw):
-        
+        '''
+        This function deals with login of a user provided the user has been registered
+        *********
+        If the user is already logged in "Already logged in" is displayed 
+        *********
+        If the user is not registered "Username not registered is displayed
+        *********
+        If the password is entered wrong "Wrong password" is diplayed
+        ********* 
+        '''
         dict1 = {}
         lst1 = []
         lst2 = []
