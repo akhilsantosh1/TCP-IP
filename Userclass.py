@@ -162,7 +162,12 @@ class User():
 
 
     def quit(self):
-        
+        '''
+        This function deals with signing out from the session of a given user
+        ********
+        After the command is entered the message "Signed out" is displayed
+        and the session is signed out
+        '''
         loginuser = pandas.read_csv('ServerAccessSession/logged_in_Users.csv')
         try:
             if self.usr_id in loginuser['username'].tolist():
