@@ -403,7 +403,11 @@ class User():
                 self.rm_tree(child)
         rmpath.rmdir()
     def session(self):
-        
+        '''
+        This function checks the users registered
+        and users logged in into session
+        ********
+        '''
         self.checked_users = pandas.read_csv("ServerAccessSession/Users.csv")
         self.users_loged = pandas.read_csv("ServerAccessSession/logged_in_Users.csv")
     
