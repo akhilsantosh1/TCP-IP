@@ -182,6 +182,13 @@ class User():
             return "\nSigned out"
 
     def delete1(self, usr_id, pasw):
+        '''
+        This function is used to delete the given user
+        ********
+        The user must have Admin privilege to use this command 
+        ********
+        The admin can delete any user by entering the username 
+        '''
         logdata = pandas.read_csv('ServerAccessSession/Users.csv')
         if self.log_check != True:
             return "\nlogin to proceed"
