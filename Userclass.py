@@ -311,7 +311,13 @@ class User():
 
 
     def read_file(self, path):
-        
+        '''
+        This fuction reads the given file from a
+        given directory of any user
+        ********
+        The data from the file can be displayed
+        ********
+        '''
         self.session()
 
         logdata = pandas.read_csv('ServerAccessSession/Users.csv')
@@ -346,7 +352,13 @@ class User():
 
 
     def write_file(self, path, data):
-       
+        '''
+        This fuction writes data to the given file in a
+        given directory of any user
+        ********
+        The data in the file can be edited or rewritten
+        ********
+        '''
         self.session()
         logdata = pandas.read_csv('ServerAccessSession/Users.csv')
         if not self.log_check:
