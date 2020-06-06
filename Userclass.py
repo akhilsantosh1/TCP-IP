@@ -392,7 +392,10 @@ class User():
 
     
     def rm_tree(self, rmpath):
-        
+        '''
+        This function links the files to the users
+        ********
+        '''
         for child in pathlib.Path(rmpath).iterdir():
             if child.is_file():
                 child.unlink()
