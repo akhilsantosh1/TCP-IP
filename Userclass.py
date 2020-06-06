@@ -286,7 +286,10 @@ class User():
         return msg
 
     def list(self):
-        
+        '''
+        This function stores the session data for any given user
+        ********
+        '''
         self.session()
         logdata = pandas.read_csv('ServerAccessSession/Users.csv')
         if not self.log_check:
