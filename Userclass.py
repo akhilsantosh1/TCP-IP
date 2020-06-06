@@ -259,7 +259,13 @@ class User():
             return"\nenter correct path name"
 
     def commands(self):
-        
+        '''
+        This function shows the commands that can be used in serverr client program
+        ********
+        The command and functions of the command
+        are displayed in this fuction
+        ********
+        '''
         user_commands = ["register :","For registering the new user ,command:register <username> <password> <privilage>\n",
                  'login : ','To login, command:login <username> <password>,Note:password should be in integer\n',
                  'quit : ','To logout, command:quit\n',
