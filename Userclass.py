@@ -1,3 +1,7 @@
+'''
+The following set consists class with functions 
+for passing commands to the server
+'''
 import pathlib
 import time
 import pandas
@@ -6,9 +10,45 @@ import csv
 import os
 
 class User():
-
+    '''
+    This class consists of the functions which are used to execute commands
+    ****
+    create_folder:
+    Function for creating directory and folder
+    ****
+    register:
+    Function to regeister a user
+    ****
+    login:
+    Function for login of a registered user
+    ****
+    quit:
+    Function for signout of a user
+    ****
+    delete1:
+    Function for deleting a registered user
+    ****
+    change_folder:
+    Function for changing directory
+    ****
+    commands:
+    Function that displays all the commands that can be executed
+    ****
+    list:
+    gives a list of all the working directories in the server- client exchange
+    ****
+    read_file:
+    Function to read the given file in a given directory
+    ****
+    write_file:
+    Function to write the given file in a given directory
+    ****
+    '''
     def __init__(self):
-       
+        '''
+        The function consists of different parameters that return diffrent 
+        values of boolean, characters, strings or integers
+        '''
         self.usr_id = None
         self.directory = None
         self.indx = {}
@@ -81,7 +121,16 @@ class User():
 
 
     def login(self, usr_id, passw):
-        
+        '''
+        This function deals with login of a user provided the user has been registered
+        *********
+        If the user is already logged in "Already logged in" is displayed 
+        *********
+        If the user is not registered "Username not registered is displayed
+        *********
+        If the password is entered wrong "Wrong password" is diplayed
+        ********* 
+        '''
         dict1 = {}
         lst1 = []
         lst2 = []
@@ -113,7 +162,12 @@ class User():
 
 
     def quit(self):
-        
+        '''
+        This function deals with signing out from the session of a given user
+        ********
+        After the command is entered the message "Signed out" is displayed
+        and the session is signed out
+        '''
         loginuser = pandas.read_csv('ServerAccessSession/logged_in_Users.csv')
         try:
             if self.usr_id in loginuser['username'].tolist():
@@ -128,6 +182,13 @@ class User():
             return "\nSigned out"
 
     def delete1(self, usr_id, pasw):
+        '''
+        This function is used to delete the given user
+        ********
+        The user must have Admin privilege to use this command 
+        ********
+        The admin can delete any user by entering the username 
+        '''
         logdata = pandas.read_csv('ServerAccessSession/Users.csv')
         if self.log_check != True:
             return "\nlogin to proceed"
@@ -165,7 +226,12 @@ class User():
 
 
     def change_folder(self, directory):
-        
+        '''
+        This function is used to change the directory of the user
+        ********
+        Admin can change the directory to any desired location
+        ********
+        '''
         logdata = pandas.read_csv('ServerAccessSession/Users.csv')
         self.session()
 
@@ -193,7 +259,13 @@ class User():
             return"\nenter correct path name"
 
     def commands(self):
-        
+        '''
+        This function shows the commands that can be used in serverr client program
+        ********
+        The command and functions of the command
+        are displayed in this fuction
+        ********
+        '''
         user_commands = ["register :","For registering the new user ,command:register <username> <password> <privilage>\n",
                  'login : ','To login, command:login <username> <password>,Note:password should be in integer\n',
                  'quit : ','To logout, command:quit\n',
@@ -214,7 +286,10 @@ class User():
         return msg
 
     def list(self):
-        
+        '''
+        This function stores the session data for any given user
+        ********
+        '''
         self.session()
         logdata = pandas.read_csv('ServerAccessSession/Users.csv')
         if not self.log_check:
@@ -236,7 +311,13 @@ class User():
 
 
     def read_file(self, path):
-        
+        '''
+        This fuction reads the given file from a
+        given directory of any user
+        ********
+        The data from the file can be displayed
+        ********
+        '''
         self.session()
 
         logdata = pandas.read_csv('ServerAccessSession/Users.csv')
@@ -271,7 +352,13 @@ class User():
 
 
     def write_file(self, path, data):
-       
+        '''
+        This fuction writes data to the given file in a
+        given directory of any user
+        ********
+        The data in the file can be edited or rewritten
+        ********
+        '''
         self.session()
         logdata = pandas.read_csv('ServerAccessSession/Users.csv')
         if not self.log_check:
@@ -305,7 +392,10 @@ class User():
 
     
     def rm_tree(self, rmpath):
-        
+        '''
+        This function links the files to the users
+        ********
+        '''
         for child in pathlib.Path(rmpath).iterdir():
             if child.is_file():
                 child.unlink()
@@ -313,8 +403,10 @@ class User():
                 self.rm_tree(child)
         rmpath.rmdir()
     def session(self):
-        
+        '''
+        This function checks the users registered
+        and users logged in into session
+        ********
+        '''
         self.checked_users = pandas.read_csv("ServerAccessSession/Users.csv")
         self.users_loged = pandas.read_csv("ServerAccessSession/logged_in_Users.csv")
-    
-    
