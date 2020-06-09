@@ -1,91 +1,97 @@
+'''
+This program deals with the testing of
+the server-client application
+'''
 import unittest
 import sys
 import pandas
 from Userclass import User
 
-class prog_test(unittest.TestCase):
+class TestClient(unittest.TestCase):
     '''
-    This class is used to test all the functionalities of the program
+    This class defines the tests that are conducted
+    for the functions defined in the client-server application
     '''
-    def regitest(self):
+    def test_login(self):
         '''
-        Used to test the register fuctionality of the program
+        This function deals with test for login data
         '''
-        datalog = pandas.DataFrame(columns=['username'])
-        datalog['username'] = ['test1']
-        datalog['password'] = ['1234']
-        datalog['isAdmin'] = 1
-        datatest = User()
-        datatest.is_login = True
-        datatest.delete1('test1', 1234)
-        datatest.createdusers = datalog
-        expect = ['\nRegistered user successfully.']
-        gathresult = []
-        test1 = [
-            ['test1', '1234', 'Admin']
-        ]
+        tlog = pandas.DataFrame(columns=['username'])
+        tlog['username'] = ['test']
+        tlog['password'] = ['123']
+        tlog['isAdmin'] = 1
 
-        for test in test1:
-            gathresult.append(datatest.register(test[0], test[1], test[2]))
-
-        print(datatest.delete1('test1', 1234))
-
-        self.assertListEqual(gathresult, expect)
-
-    def logintest(self):
-        '''
-        This function is used to test the login feature of the program
-        '''
-        datalog = pandas.DataFrame(columns=['username'])
-        datalog['username'] = ['test']
-        datalog['password'] = ['123']
-        datalog['isAdmin'] = 1
-        datatest = User()
-        datatest.createdusers = datalog
-        datatest.login('test', 123)
-        print(datatest.delete1('test', 123))
-        datatest.register('test', '123', 'admin')
-        expect = ['\nWrong password!']
-        gathresult = []
-        test1 = [
+        user_test = User()
+        user_test.createdusers = tlog
+        user_test.login('test', 123)
+        print(user_test.delete1('test', 123))
+        user_test.register('test', '123', 'admin')
+        expresults = ['\nWrong password!']
+        obtresults = []
+        tests = [
             ['test', '1234'],
         ]
 
-        for test in test1:
-            gathresult.append(datatest.login(test[0], test[1]))
-        datatest.is_login = True
-        print(datatest.delete1('test', 123))
-        datatest.quit()
+        for test in tests:
+            obtresults.append(user_test.login(test[0], test[1]))
+        user_test.is_login = True
+        print(user_test.delete1('test', 123))
+        user_test.quit()
 
-        self.assertListEqual(gathresult, expect)    
+        self.assertListEqual(obtresults, expresults)
 
 
-    def commandtest(self):
+    def test_registration(self):
         '''
-        This fuction tests wheather the commands are displaying correctly
-        or not.
+        This function deals with tests for registration
         '''
-        datatest = User()
-        exptoutput = datatest.commands
+        tlog = pandas.DataFrame(columns=['username'])
+        tlog['username'] = ['test1']
+        tlog['password'] = ['1234']
+        tlog['isAdmin'] = 1
+        user_test = User()
+        user_test.is_login = True
+        user_test.delete1('test1', 1234)
+        user_test.createdusers = tlog
+        expresults = ['\nRegistration successfull.']
+        obtresults = []
+        tests = [
+            ['test1', '1234', 'Admin']
+        ]
 
-        datatest.quit()
+        for test in tests:
+            obtresults.append(user_test.register(test[0], test[1], test[2]))
 
-        lotest = pandas.DataFrame(columns=['username', 'password', 'isAdmin'])
-        lotest.to_csv('ServerAccessSession/Users.csv', index=False)
+        print(user_test.delete1('test1', 1234))
+
+        self.assertListEqual(obtresults, expresults)
+
+
+    def test_commands(self):
+        '''
+        This test the commands used by the client
+        '''
+        user_test = User()
+        exptoutput = user_test.commands
+
+        user_test.quit()
+
+        login_rst = pandas.DataFrame(columns=['username', 'password', 'isAdmin'])
+        login_rst.to_csv('ServerAccessSession/Users.csv', index=False)
 
         self.assertTrue(exptoutput)
 
 
-    def quittest(self):
-        '''
-        This fuction is used to test weather the session is quiting or not.
-        '''
+    def test_quit(self):
+        """
+        This test will check quit response.
+        """
         expresult = ["\nSigned out"]
         obtresult = []
 
-        datatest = User()
+        user_test = User()
 
-        obtresult.append(datatest.quit())
+        obtresult.append(user_test.quit())
 
         login_rst = pandas.DataFrame(columns=['username', 'password', 'isAdmin'])
         login_rst.to_csv('ServerAccessSession/Users.csv', index=False)
@@ -93,14 +99,15 @@ class prog_test(unittest.TestCase):
         self.assertListEqual(obtresult, expresult)
 
 
-def completest(usetest):
+def step_completed(test_to_use):
     '''
-    This fuction tests all the functionalities of the program.
+    This function deals with execution of all the
+    tests in sequence and returns the result
     '''
     load = unittest.TestLoader()
     suite = unittest.TestSuite()
 
-    suite.addTests(load.loadTestsFromTestCase(usetest))
+    suite.addTests(load.loadTestsFromTestCase(test_to_use))
     runtest = unittest.TextTestRunner(verbosity=2)
     result = runtest.run(suite)
 
@@ -109,16 +116,17 @@ def completest(usetest):
 
     return result.wasSuccessful()
 
+
 def testing():
     '''
-    This function tests the all completed fuctions steps.
+    This function executes the function of step_completed
     '''
     print('*'*60 + "\nTesting:\n")
-    return completest(prog_test)
+    return step_completed(TestClient)
 
 if __name__ == "__main__":
     if testing() is not True:
-        print("\n\tThe test failed,")
+        print("\n\tThe tests did not pass,")
         sys.exit(1)
 
     sys.exit(0)
