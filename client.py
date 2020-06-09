@@ -1,6 +1,18 @@
+'''
+The program contain the client operation and connection 
+to the server
+-------
+when the connection is set-up between the server 
+and the client the commands that are entered by the user
+gets executed
+'''
 import asyncio
 
 async def Client():
+    '''
+    this client function is used to set-up connection between
+    the client and the server
+    '''
     read, write = await asyncio.open_connection(
         '127.0.0.1', 8080)
     command = ''

@@ -1,35 +1,98 @@
+'''
+This file contains the program of the server
+'''
 import asyncio
 import signal
+from Userclass import User
 
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-async def handle_echo(reader, writer):
-    addr = writer.get_extra_info('peername')
-    message = f"{addr} is connected !!!!"
-    print(message)
+async def handle_echo(read, write):
+    '''
+    This functions is used to host the connection which the client
+    will be connecting
+    '''
+    loc = write.get_extra_info('peername')
+    print("connected to",loc)
+    member = User()
     while True:
-        data = await reader.read(100)
-        message = data.decode().strip()
-        if message == 'exit':
+        data = await read.read(4096)
+        info = data.decode().strip()
+        print(f"Received {info} from {loc}")
+        msg = commands_request(member, info)
+        info1 = str(msg).encode()
+        write.write(info1)
+        await write.drain()
+        if info == 'exit':
             break
-
-        print(f"Received {message} from {addr}")
-        print(f"Send: {message}")
-        writer.write(data + '\n'.encode())
-        await writer.drain()
     print("Close the connection")
-    writer.close()
+    write.close()
 
+
+def commands_request(cli, command):
+    '''
+    this function will check the recived commands from the client
+    and check weather the commands entered by the client is 
+    correct or in correct
+    '''
+    cli.session()
+    command = command.rstrip("\n").rstrip(" ").lstrip(" ")
+    if command.split(" ")[0] == "commands":
+        return cli.commands()
+    if command.split(" ")[0] == "register":
+        if len(command.split(" ")) == 4:
+            return cli.register(command.split(" ")[1], command.split(" ")[2], command.split(" ")[3])
+        else:
+            return "Please enter correct command"
+    if command.split(" ")[0] == "logout":
+        return cli.quit()
+    if command.split(" ")[0] == "quit":
+        return cli.quit()
+    if command.split(" ")[0] == "login":
+        if len(command.split(" ")) == 3:
+            return cli.login(command.split(" ")[1], int(command.split(" ")[2]))
+        else:
+            return "Please enter correct command"
+    if command.split(" ")[0] == "list":
+        return cli.list()
+    if command.split(" ")[0] == "change_folder":
+        if len(command.split(" ")) == 2:
+            return cli.change_folder(command.split(" ")[1])
+        else:
+            return "Please enter correct command"
+    if command.split(" ")[0] == "read_file":
+        if len(command.split(" ")) == 2:
+            return cli.read_file(command.split(" ")[1])
+        else:
+            return "Please enter correct command" 
+    if command.split(" ")[0] == "write_file":
+        if len(command.split(" ")) >= 2:
+            return cli.write_file(command.split(" ")[1], " ".join(command.split(" ")[2:]))
+        else:
+            return "Please enter correct command"
+    if command.split(" ")[0] == "create_folder":
+        if len(command.split(" ")) == 2:
+            return cli.create_folder(command.split(" ")[1])
+        else:
+            return "Please enter correct command"
+    if command.split(" ")[0] == "delete1":
+        if len(command.split(" ")) == 3:
+            return cli.delete1(command.split(" ")[1], int(command.split(" ")[2]))
+        else:
+            return "Please enter correct command"    
+    return "Please enter correct command"
 
 async def main():
+    '''
+    this function initiates the connection between the server and
+    the client
+    '''
     server = await asyncio.start_server(
-        handle_echo, '127.0.0.1', 8888)
-
-    addr = server.sockets[0].getsockname()
-    print(f'Serving on {addr}')
-
+        handle_echo, '127.0.0.1', 8080)
+    addres = server.sockets[0].getsockname()
+    print("server is on")
+    print(addres)
     async with server:
         await server.serve_forever()
-
-
+        
 asyncio.run(main())
