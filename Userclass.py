@@ -410,5 +410,3 @@ class User():
         '''
         self.checked_users = pandas.read_csv("ServerAccessSession/Users.csv")
         self.users_loged = pandas.read_csv("ServerAccessSession/logged_in_Users.csv")
-    
-    
